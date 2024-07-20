@@ -60,7 +60,7 @@ class ApplicationController extends Controller
             "submitted" => null,
             "prepare_conference" => null ,
             "in_conference" => "conference_notice",
-            "closed" =>"conference_record",
+            "closed" =>["conference_record","consent_letter"],
             "edited" =>null,
         ];
         return $mappingtype["$status"];
@@ -73,7 +73,13 @@ class ApplicationController extends Controller
         $applications = array_map(function ($item) {
             $item['statusText'] = $this->convertStatusFromEnglishToChinese($item['status']);
             $item['statustype'] =$this->convertStatustoType($item['status']);
+            if($item['status']=='closed'){
+                $item['download']= $this->applicationFileModel->retrieveByApplicationIdAndType($item["id"],$item['statustype'][0])['name']??null;
+                $item['download2']=$this->applicationFileModel->retrieveByApplicationIdAndType($item["id"],$item['statustype'][1])['name']??null;
+            }
+            else{
             $item['download']= $this->applicationFileModel->retrieveByApplicationIdAndType($item["id"],$item['statustype'])['name']??null;
+            }
             return $item;
         }, $applications);
 

@@ -6,6 +6,7 @@
         <div class="card">
             <div class="card-header">
                 <a href="./?url=page/application-case" class="btn btn-primary" role="button"><i class="bi bi-plus-lg"></i> 新增申請案</a>
+                <a href="./?url=page/application-case" class="btn btn-primary" role="button"><i class="bi bi-plus-lg"></i> 新增船舶</a>
             </div>
             <div class="card-body">
 
@@ -14,6 +15,7 @@
                         <tr>
                             <th>#</th>
                             <th>船名</th>
+                            <th>申請案</th>
                             <th>填表階段</th>
                             <th>操作</th>
                             <th> 下載</th>
@@ -25,6 +27,7 @@
                             <tr>
                                 <td><?= $i ?></td>
                                 <td> <?= $application['vesselname'] ?> </td>
+                                <td><?= $application['status'] != 'edited' && $application['status'] != 'submitted' ?  $application['id'] : null ?></td>
                                 <td><?= $application['statusText'] ?></td>
                                 <td>
                                     <a href="./?url=application-stage&id=<?= $application['id'] ?>" class="btn btn-primary">
@@ -32,11 +35,20 @@
                                         <?= $application['status'] == 'edited' ? '編輯' : '檢視' ?>
                                     </a>
                                 </td>
-                                <?php if ($application['download'] != null) : ?>
+                                <?php if ($application['status'] == 'closed') : ?>
+                                    <td>
+                                        <a href="<?= $application['download'] ?>" class="btn btn-primary"><i class="bi bi-box-arrow-down"></i>
+                                            下載會議紀錄
+                                        </a>
+                                        <a href="<?= $application['download2'] ?>" class="btn btn-primary"><i class="bi bi-box-arrow-down"></i>
+                                            下載同意函
+                                        </a>
+                                    </td>
+                                <?php elseif ($application['download'] != null) : ?>
                                     <td><a href="<?= $application['download'] ?>" class="btn btn-primary"><i class="bi bi-box-arrow-down"></i>
                                             <?= $application['statustype'] == 'conference_notice' ? '下載開會通知單' : '下載會議紀錄' ?>
                                         </a></td>
-                                <?php else:?>
+                                <?php else : ?>
                                     <td></td>
                                 <?php endif; ?>
                             </tr>

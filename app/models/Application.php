@@ -11,7 +11,7 @@ class Application
 
     public function getAllByApplicantId($applicant_id): array|bool
     {
-        $query = 'SELECT * FROM `applications` WHERE `applicant_id`=:applicant_id';
+        $query = 'SELECT * FROM `applications` WHERE `applicant_id`=:applicant_id ORDER BY `applications`.`created_at` DESC';
         $this->db->query($query);
         $this->db->bind(':applicant_id', $applicant_id);
         return $this->db->getAll();

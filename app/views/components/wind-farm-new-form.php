@@ -29,6 +29,10 @@
                     <input type="text" class="form-control datepicker" name="end_shipment_time" aria-label="end_shipment_time" value="<?= $info['end_shipment_time']??null ?>" required <?= $_SESSION['identity'] == 'domestic_maritime_association' ? 'disabled' : ''; ?>>
                 </div>
                 <div class="input-group mb-3">
+                <span class="input-group-text">完工日期</span>
+                    <input type="text" class="form-control datepicker" name="start_shipment_time" aria-label="start_shipment_time" value="<?= null ?>" >
+                </div>
+                <div class="input-group mb-3">
                     <span class="input-group-text">需求規格</span>
                     <textarea class="form-control" name="detail" rows="10" aria-label="detail" required <?= $_SESSION['identity'] == 'domestic_maritime_association' ? 'disabled' : ''; ?>><?= $info['detail']??null ?></textarea>
                 </div>
