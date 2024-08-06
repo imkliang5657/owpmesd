@@ -109,8 +109,7 @@ public function update(array $data): void
                 wf.name AS wind_farm_name,
                 vc.id AS vessel_category_id,
                 vc.vessel_category_name AS vessel_category_name,
-                $vdColumnStr,
-                v.name AS vessel_name
+                $vdColumnStr
             FROM 
                 applications a
             JOIN
@@ -127,10 +126,8 @@ public function update(array $data): void
                 vessel_details vd ON vd.id = avr.vessel_detail_id
             JOIN 
                 application_foreign_vessel afv ON a.id = afv.application_id
-            JOIN 
-                vessels v ON v.id = afv.foreign_vessel_id
             WHERE 
-                a.id = :id
+                a.id =:id
         SQL;
         $this->db->query($query);
         $this->db->bind(':id', $id);
@@ -140,7 +137,7 @@ public function update(array $data): void
     public function retrieveByStatus($status): bool|array
     {
         $query = "SELECT 
-                    `applications`.`id`, `applications`.`official_document_number`, `applications`.`approved_sailing_date`, `applications`.`approved_return_date`,
+                    `applications`.`id`,`applications`.`command`, `applications`.`official_document_number`, `applications`.`approved_sailing_date`, `applications`.`approved_return_date`,
                     `users`.`name` as `applicant`,
                     `wind_farms`.`name` as `wind_farm`,
                     `vessels`.`name` as `vessel`

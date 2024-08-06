@@ -62,13 +62,18 @@ class Api
             'applications/application/close' => ['ApplicationController', 'close'],
 
             // Application
+            'page/application-ships' => ['ApplicationController', 'newApplicationShip'],
             'page/application-manage' => ['ApplicationController', 'showApplicationManage'],
             'page/application-case' => ['ApplicationController', 'showApplication'],
             'upsert-application-case' => ['ApplicationController', 'upsertApplicationCase'],
             'page/application-requirement' => ['ApplicationController', 'showApplicationRequirement'],
             'upsert-requirement' => ['ApplicationController', 'upsertRequirement'],
             'page/application-foreign-vessel' => ['ApplicationController', 'showApplicationForeignVessel'],
+            'page/application-vessel-information' => ['ApplicationController', 'showApplicationVesselInformation'],
             'upsert-application-foreign-vessel' => ['ApplicationController', 'upsertApplicationVessel'],
+            'upsert-application-foreign-vessel-information' => ['ApplicationController', 'upsertApplicationVesselInformation'],
+            'page/application-upload-shipfile' =>['ApplicationController', 'showApplicationUploadShipFile'],
+            'upsert-application-upload-shipfile' => ['ApplicationController', 'upsertApplicationShipFile'],
             'page/application-content' => ['ApplicationController', 'showApplicationContent'],
             'submit-application-content' => ['ApplicationController', 'submitApplicationContent'],
             'application-stage' => ['ApplicationController', 'applicationStage'],

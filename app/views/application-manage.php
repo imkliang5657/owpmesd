@@ -18,7 +18,8 @@
                             <th>申請案</th>
                             <th>填表階段</th>
                             <th>操作</th>
-                            <th> 下載</th>
+                            <th>意見</th>
+                            <th>下載</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +35,9 @@
                                         <i class="bi bi-<?= $application['status'] == 'edited' ? 'pencil-square' : 'eye-fill' ?>"></i>
                                         <?= $application['status'] == 'edited' ? '編輯' : '檢視' ?>
                                     </a>
+                                </td>
+                                <td>
+                                <?= $application['command'] ?>
                                 </td>
                                 <?php if ($application['status'] == 'closed') : ?>
                                     <td>

@@ -19,6 +19,17 @@ class ApplicationFile
         $this->db->bind(':type', $type);
         $this->db->execute();
     }
+    public function update($application_id, $name, $type): void
+    {
+        $query = "UPDATE `application_files` SET  `name`=:name WHERE `application_id`=:application_id and `type`=:type "
+               ;
+        $this->db->query($query);
+        $this->db->bind(':application_id', $application_id);
+        $this->db->bind(':name', $name);
+        $this->db->bind(':type', $type);
+        $this->db->execute();
+    }
+
 
     public function retrieveByApplicationId($id): array|bool
     {

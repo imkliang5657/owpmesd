@@ -9,11 +9,15 @@
         <div class="col text-center">
             <a href="./?url=page/application-requirement&id=<?= $data['applicationId'] ?? '' ?>" class="btn btn-<?= $data['buttons']['style'][1] ?> btn-lg <?= $data['buttons']['disabled'][1] ?>" role="button">需求規格</a>
         </div>
+       
         <div class="col text-center">
-            <a href="./?url=page/application-foreign-vessel&id=<?= $data['applicationId'] ?? '' ?>" class="btn btn-<?= $data['buttons']['style'][2] ?> btn-lg <?= $data['buttons']['disabled'][2] ?>" role="button">國外船舶選擇</a>
+            <a href="./?url=page/application-vessel-information&id=<?= $data['applicationId'] ?? '' ?>" class="btn btn-<?= $data['buttons']['style'][2] ?> btn-lg <?= $data['buttons']['disabled'][2] ?>" role="button">國外船舶規格</a>
         </div>
         <div class="col text-center">
-            <a href="./?url=page/application-content&id=<?= $data['applicationId'] ?? '' ?>" class="btn btn-<?= $data['buttons']['style'][3] ?> btn-lg <?= $data['buttons']['disabled'][3] ?>" role="button">檢視資料</a>
+            <a href="./?url=page/application-upload-shipfile&id=<?= $data['applicationId'] ?? '' ?>" class="btn btn-<?= $data['buttons']['style'][3] ?> btn-lg <?= $data['buttons']['disabled'][3] ?>" role="button">船舶資料上傳</a>
+        </div>
+        <div class="col text-center">
+            <a href="./?url=page/application-content&id=<?= $data['applicationId'] ?? '' ?>" class="btn btn-<?= $data['buttons']['style'][4] ?> btn-lg <?= $data['buttons']['disabled'][4] ?>" role="button">檢視資料</a>
         </div>
     </div>
 </div>
