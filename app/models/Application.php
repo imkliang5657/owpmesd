@@ -139,14 +139,12 @@ public function update(array $data): void
         $query = "SELECT 
                     `applications`.`id`,`applications`.`command`, `applications`.`official_document_number`, `applications`.`approved_sailing_date`, `applications`.`approved_return_date`,
                     `users`.`name` as `applicant`,
-                    `wind_farms`.`name` as `wind_farm`,
-                    `vessels`.`name` as `vessel`
+                    `wind_farms`.`name` as `wind_farm`
                   FROM (SELECT * FROM `applications` WHERE `status` = :status) as `applications` 
                   INNER JOIN `users` ON `users`.`id` = `applications`.`applicant_id`
                   INNER JOIN `application_informations` ON `application_informations`.`application_id` = `applications`.`id`
                   INNER JOIN `wind_farms` ON `wind_farms`.`id` = `application_informations`.`wind_farm_id`
-                  INNER JOIN `application_foreign_vessel` ON `application_foreign_vessel`.`application_id` = `applications`.`id`
-                  INNER JOIN `vessels` ON `vessels`.`id` = `application_foreign_vessel`.`foreign_vessel_id`";
+                  INNER JOIN `application_foreign_vessel` ON `application_foreign_vessel`.`application_id` = `applications`.`id`";
         $this->db->query($query);
         $this->db->bind(':status', $status);
         return $this->db->getAll();
