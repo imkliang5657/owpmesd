@@ -55,9 +55,9 @@ class ApplicationController extends Controller
                     is_null($applicationId) || $this->applicationInformationModel->getByApplicationId($applicationId) === false,
                     is_null($applicationId) || $this->applicationVesselRequirementModel->getByApplicationId($applicationId) === false,
                     is_null($applicationId) || $this->applicationForeignVesselModel->getByApplicationId($applicationId) === false,
-                    is_null($applicationId) || $this->applicationFileModel->retrieveByApplicationId($applicationId) === false,
+                    is_null($applicationId) || $this->applicationFileModel->retrieveByApplicationIdAndType($applicationId,'specification') === false
                 ]
-            ),
+            ),5rt
         ];
     }
     public function convertStatustoType($status)
@@ -88,8 +88,7 @@ class ApplicationController extends Controller
         }, $applications);
 
         $applications = array_map(function ($item) {
-            $item['vessel_id'] = $this->applicationForeignVesselModel->getByApplicationId($item['id'])['foreign_vessel_id'] ?? null;
-            $item['vesselname'] = $item['vessel_id'] ? $this->vesselModel->getById($item['vessel_id'])['name'] : '無';
+            $item['vesselname'] = $this->applicationForeignVesselModel->getByApplicationId($item['id'])['name'] ?? '無';
             return $item;
         }, $applications);
         $this->view('application-manage', ['applications' => $applications,]);
