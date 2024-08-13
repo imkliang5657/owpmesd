@@ -194,28 +194,8 @@ class ApplicationController extends Controller
      //匯入船舶資料
      public function importVesselData(){
         $postData=$this->retrievePostData();
-        $countries = $this->CountriesModel->getAllCountries();
-        $vesselCategoryId = $this->applicationInformationModel->getByApplicationId($postData['id'])['vessel_category_id'];
-        $vesselCategoryName = $this->vesselCategoryModel->getCategoryNameById($vesselCategoryId);
-        $columns = Utils::convertEnglishToChineseForSpecificationColumns($vesselCategoryId);
-        
-        $data = $this->vesselModel->getWholeVesselById($postData['foreign_vessel_id']);
-        if($data['vessel_detail_id']!=NULL){
-            $data += $this->vesselDetailModel->getById($data['vessel_detail_id']);
-        }
-        
-        $this->view(
-            'application-vessel-information',
-            [
-                'buttons' => $this->getButtons($postData['id'], 2),
-                'applicationId' => $postData['id'],
-                'countries' => $countries,
-                'columns' => $columns,
-                'vessels' =>$this->vesselModel->getForeignVesselByVesselCategoryId($vesselCategoryId),
-                'vesselCategoryName' => $vesselCategoryName,
-                'application_vessel' => $data ?? null
-            ]
-        );
+        $this->redirect('./?url=page/application-vessel-information&id=' . $postData['id'] .'&isimport=1&foreign_vessel_id=' .$postData['foreign_vessel_id'] );
+       
     }
     //新增修改國外船舶規格
     public function showApplicationVesselInformation(): void
@@ -225,11 +205,18 @@ class ApplicationController extends Controller
         $vesselCategoryId = $this->applicationInformationModel->getByApplicationId($getData['id'])['vessel_category_id'];
         $vesselCategoryName = $this->vesselCategoryModel->getCategoryNameById($vesselCategoryId);
         $columns = Utils::convertEnglishToChineseForSpecificationColumns($vesselCategoryId);
+        //判斷是否有歷史資料
         if ($this->applicationForeignVesselModel->getByApplicationId($getData['id'])) {
             $data = $this->applicationForeignVesselModel->getWholeVesselById($getData['id']);
             $data += $this->vesselDetailModel->getById($data['vessel_detail_id']);
-            // var_dump($data);
-            //  $data ? $this->applicationForeignVesselModel->getWholeVesselById($getData['id']) : null;
+            
+        }
+        //判斷匯入
+        if(isset($getData['isimport'])){
+                $data = $this->vesselModel->getWholeVesselById($getData['foreign_vessel_id']);
+            if($data['vessel_detail_id']!=NULL){
+                $data += $this->vesselDetailModel->getById($data['vessel_detail_id']);
+            }
         }
         $this->view(
             'application-vessel-information',
