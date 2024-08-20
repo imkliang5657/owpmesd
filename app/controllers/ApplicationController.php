@@ -43,7 +43,8 @@ class ApplicationController extends Controller
 
     private function getButtons(?int $applicationId, int $page): array
     {
-        $submitted = isset($applicationId) && $this->applicationModel->getById($applicationId)['status'] !== 'edited';
+        $status=$this->applicationModel->getById($applicationId)['status'] ?? null ;
+        $submitted = isset($applicationId) && $status !== 'edited' && $status !== 'rejected' ;
         $styles = array_fill(0, 5, 'secondary');
         $styles[$page] = 'primary';
         return [
@@ -57,7 +58,7 @@ class ApplicationController extends Controller
                     is_null($applicationId) || $this->applicationForeignVesselModel->getByApplicationId($applicationId) === false,
                     is_null($applicationId) || $this->applicationFileModel->retrieveByApplicationIdAndType($applicationId,'specification') === false
                 ]
-            ),5rt
+            ),
         ];
     }
     public function convertStatustoType($status)
@@ -67,7 +68,8 @@ class ApplicationController extends Controller
             "prepare_conference" => null,
             "in_conference" => "conference_notice",
             "closed" => ["conference_record", "consent_letter"],
-            "edited" => null,
+            "edited" => null ,
+            "rejected" => null 
         ];
         return $mappingtype["$status"];
     }
@@ -190,6 +192,32 @@ class ApplicationController extends Controller
         }
         return $validData;
     }
+    //匯入船舶資料
+    public function importVesselData(){
+        $postData=$this->retrievePostData();
+        $countries = $this->CountriesModel->getAllCountries();
+        $vesselCategoryId = $this->applicationInformationModel->getByApplicationId($postData['id'])['vessel_category_id'];
+        $vesselCategoryName = $this->vesselCategoryModel->getCategoryNameById($vesselCategoryId);
+        $columns = Utils::convertEnglishToChineseForSpecificationColumns($vesselCategoryId);
+        
+        // $data = $this->vesselModel->getWholeVesselById($postData['foreign_vessel_id']);
+        // if($data['vessel_detail_id']!=NULL){
+        //     $data += $this->vesselDetailModel->getById($data['vessel_detail_id']);
+        // }
+        $this->redirect('./?url=page/application-vessel-information&id=' . $postData['id'] .'&isimport=1&foreign_vessel_id=' .$postData['foreign_vessel_id'] );
+        // $this->view(
+        //     'application-vessel-information',
+        //     [
+        //         'buttons' => $this->getButtons($postData['id'], 2),
+        //         'applicationId' => $postData['id'],
+        //         'countries' => $countries,
+        //         'columns' => $columns,
+        //         'vessels' =>$this->vesselModel->getForeignVesselByVesselCategoryId($vesselCategoryId),
+        //         'vesselCategoryName' => $vesselCategoryName,
+        //         'application_vessel' => $data ?? null
+        //     ]
+        // );
+    }
     //新增修改國外船舶規格
     public function showApplicationVesselInformation(): void
     {
@@ -204,6 +232,12 @@ class ApplicationController extends Controller
             // var_dump($data);
             //  $data ? $this->applicationForeignVesselModel->getWholeVesselById($getData['id']) : null;
         }
+        if(isset($getData['isimport'])){
+            $data = $this->vesselModel->getWholeVesselById($getData['foreign_vessel_id']);
+        if($data['vessel_detail_id']!=NULL){
+            $data += $this->vesselDetailModel->getById($data['vessel_detail_id']);
+            }
+        }
         $this->view(
             'application-vessel-information',
             [
@@ -211,6 +245,7 @@ class ApplicationController extends Controller
                 'applicationId' => $getData['id'],
                 'countries' => $countries,
                 'columns' => $columns,
+                'vessels' =>$this->vesselModel->getForeignVesselByVesselCategoryId($vesselCategoryId),
                 'vesselCategoryName' => $vesselCategoryName,
                 'application_vessel' => $data ?? null
             ]
@@ -223,7 +258,6 @@ class ApplicationController extends Controller
         // var_dump($PostData);
         //update
         $Vessel=$this->applicationForeignVesselModel->getByApplicationId($PostData['application_id']);
-        var_dump($Vessel);
         if ($Vessel) {
             echo"sucessful";
             $VesselDetail = $this->validDataforTable($PostData, 'vessel_details');
@@ -328,7 +362,7 @@ class ApplicationController extends Controller
             'vessel' => $vessel,
             'file' =>$this->applicationFileModel->retrieveByApplicationId($getData['id']),
             'columns' => $columns,
-            'edited' => $this->applicationModel->getById($getData['id'])['status'] == 'edited',
+            'edited' => $this->applicationModel->getById($getData['id'])['status'] == 'edited'|| $this->applicationModel->getById($getData['id'])['status'] == 'rejected',
         ]);
     }
 

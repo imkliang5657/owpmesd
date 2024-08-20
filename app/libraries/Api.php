@@ -62,6 +62,7 @@ class Api
             'applications/application/close' => ['ApplicationController', 'close'],
 
             // Application
+            'import-foreign-vessel-information' => ['ApplicationController', 'importVesselData'],
             'page/application-ships' => ['ApplicationController', 'newApplicationShip'],
             'page/application-manage' => ['ApplicationController', 'showApplicationManage'],
             'page/application-case' => ['ApplicationController', 'showApplication'],

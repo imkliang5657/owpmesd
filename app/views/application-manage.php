@@ -28,7 +28,7 @@
                             <tr>
                                 <td><?= $i ?></td>
                                 <td> <?= $application['vesselname'] ?> </td>
-                                <td><?= $application['status'] != 'edited' && $application['status'] != 'submitted' ?  $application['id'] : null ?></td>
+                                <td><?= $application['status'] != 'edited' && $application['status'] != 'submitted' && $application['status'] != 'rejected' ?  $application['id'] : null ?></td>
                                 <td><?= $application['statusText'] ?></td>
                                 <td>
                                     <a href="./?url=application-stage&id=<?= $application['id'] ?>" class="btn btn-primary">
