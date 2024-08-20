@@ -19,7 +19,7 @@
                             <select class="form-select" name="wind_farm_id" aria-label="wind_farm_id" required>
                                 <option selected disabled></option>
                                 <?php foreach ($data['windFarms'] as $windFarm): ?>
-                                    <option value="<?= $windFarm['id'] ?>" <?= $data['applicationInformation']['wind_farm_id'] ?? null == $windFarm['id'] ? 'selected' : '' ?>><?= $windFarm['name'] ?></option>
+                                    <option value="<?= $windFarm['id'] ?>" <?= ( $data['applicationInformation']['wind_farm_id'] ?? null )== $windFarm['id'] ? 'selected' : '' ?>><?= $windFarm['name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -32,7 +32,7 @@
                             <select class="form-select" name="vessel_category_id" aria-label="vessel_category_id" required>
                                 <option selected disabled></option>
                                 <?php foreach ($data['vesselCategories'] as $category): ?>
-                                    <option value="<?= $category['id'] ?>" <?= $data['applicationInformation']['vessel_category_id'] ?? null == $category['id'] ? 'selected' : '' ?>><?= $category['vessel_category_name'] ?></option>
+                                    <option value="<?= $category['id'] ?>" <?= ($data['applicationInformation']['vessel_category_id'] ?? null) == $category['id'] ? 'selected' : '' ?>><?= $category['vessel_category_name'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

@@ -44,7 +44,8 @@ class ApplicationController extends Controller
 
     private function getButtons(?int $applicationId, int $page): array
     {
-        $submitted = isset($applicationId) && $this->applicationModel->getById($applicationId)['status'] !== 'edited';
+        $status=$this->applicationModel->getById($applicationId)['status'];
+        $submitted = isset($applicationId) && ($status !== 'edited' || $status !== 'rejected') ;
         $styles = array_fill(0, 5, 'secondary');
         $styles[$page] = 'primary';
         return [
@@ -69,6 +70,7 @@ class ApplicationController extends Controller
             "in_conference" => "conference_notice",
             "closed" => ["conference_record", "consent_letter"],
             "edited" => null,
+            "rejected" => null
         ];
         return $mappingtype["$status"];
     }
@@ -343,8 +345,7 @@ class ApplicationController extends Controller
             'vessel' => $vessel,
             'file' =>$this->applicationFileModel->retrieveByApplicationId($getData['id']),
             'columns' => $columns,
-            'edited' => $this->applicationModel->getById($getData['id'])['status'] == 'edited',
-        ]);
+            'edited' =>  $this->applicationModel->getById($getData['id'])['status'] == 'edited'|| $this->applicationModel->getById($getData['id'])['status'] == 'rejected', ]);
     }
 
     public function submitApplicationContent(): void
